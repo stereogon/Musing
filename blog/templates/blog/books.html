@@ -1,0 +1,75 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="posts-container">
+    <div class="right-section">
+        <div class="search-container" style="background: url('{{STATIC_URL}}images/assets/landingpage.jpg');
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;">
+            <form class="posts__search" method="GET" action="{% url 'books' %}" autocomplete="off">
+                <label>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <title>search</title>
+                        <path d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"></path>
+                    </svg>
+                    <input name="q" placeholder="Search for books" />
+                </label>
+            </form>
+        </div>
+        <div class="books-heading">
+            {% if g == True %}
+            <center>
+                <h1>Search Results</h1>
+            </center>
+            {% else %}
+            <center>
+                <h1>Book Reviews</h1>
+            </center>
+            {% endif %}
+        </div>
+        {% if no_post == False %}
+        <div class="wrapper-two">
+            {% for post in posts_on_page %}
+            <a href="posts/{{post.post_id}}">
+                <div class="card">
+                    <div class="card-banner">
+                        <img class="banner-img" src="{{post.thumbnail.url}}" alt="Banner Image">
+                    </div>
+                    <div class="card-body">
+                        <p class="blog-category">#{{post.category}}</p>
+                        <h2 class="blog-title">{{post}}</h2>
+                        <p class="blog-time">{{post.created_on|timesince}} ago</p>
+                        <div class="card-profile">
+                            <img class="profile-img" src="{% static 'images/profilepics/profile.jpg' %}" alt="Profile Image">
+                            <div class="card-profile-info">
+                                <h3 class="profile-name">Rajat Khandelwal</h3>
+                                <p class="profile-tagline">admin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div>
+            <center>
+                {% if posts_on_page.has_previous %}
+                <a class="btn-page" href="?page=1">First</a>
+                <a class="btn-page" href="?page={{posts_on_page.previous_page_number}}">Previous</a>
+                {% endif %}
+                <a class="btn-page-active" href="">{{posts_on_page.number}}</a>
+                {% if posts_on_page.has_next %}
+                <a class="btn-page" href="?page={{posts_on_page.next_page_number}}">Next</a>
+                <a class="btn-page" href="?page={{posts_on_page.paginator.num_pages}}">Last</a>
+                {% endif %}
+            </center>
+        </div>
+        {% else %}
+        <center>
+            <h1>No Blogs Found</h1>
+        </center>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

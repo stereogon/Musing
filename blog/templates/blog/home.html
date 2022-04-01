@@ -1,0 +1,58 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="section" style="background: url('{{STATIC_URL}}images/assets/landingpage.jpg');
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;">
+    <div class="hero-text">
+        <h1 class="landing-text">I am Rajat Khandelwal</h1>
+        <div class="know-more"><a href="{% url 'about' %}">Know More</a></div>
+    </div>
+    <form class="header__search" method="GET" action="{% url 'home' %}" autocomplete="off">
+        <label>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>search</title>
+                <path d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"></path>
+            </svg>
+            <input name="q" placeholder="Search for blogs" />
+        </label>
+    </form>
+</div>
+<div class="blogs-heading">
+    {% if g == False %}
+    <h1>Recent Blogs</h1>
+    {% else %}
+    <h1>Search Results</h1>
+    {% endif %}
+    <img class="down-arrow" src="static/images/assets/downarrow.svg">
+</div>
+<div class="wrapper">
+    {% if no_post == False %}
+    {% for post in posts %}
+    <a href="posts/{{post.post_id}}">
+        <div class="card">
+            <div class="card-banner">
+                <img class="banner-img" src="{{post.thumbnail.url}}" alt="Banner Image">
+            </div>
+            <div class="card-body">
+                <p class="blog-category">#{{post.category}}</p>
+                <h2 class="blog-title">{{post}}</h2>
+                <p class="blog-time">{{post.created_on|timesince}} ago</p>
+                <div class="card-profile">
+                    <img class="profile-img" src="{% static 'images/profilepics/profile.jpg' %}" alt="Profile Image">
+                    <div class="card-profile-info">
+                        <h3 class="profile-name">Rajat Khandelwal</h3>
+                        <p class="profile-tagline">admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+    {% else %}
+    <h3>No Blogs Found.</h3>
+    {% endif %}
+</div>
+<div class="btn-container"><a href="posts" class="find-more-btn">Find More Blogs</a></div>
+{% endblock content %}
